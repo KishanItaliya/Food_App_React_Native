@@ -1,21 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { AuthenticationNavigator, assets as authenticationAssets } from './src/Authentication';
+import { LoadAssets, theme } from './src/components';
+import { ThemeProvider } from '@shopify/restyle';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+const assets = [...authenticationAssets];
+
+const fonts = {
+  "SFProDisplay-Bold": require("./assets/fonts/SFProDisplay-Bold.ttf"),
+  "SFProDisplay-Semibold": require("./assets/fonts/SFProDisplay-Semibold.ttf"),
+  "SFProDisplay-Regular": require("./assets/fonts/SFProDisplay-Regular.ttf"),
+  "SFProDisplay-Medium": require("./assets/fonts/SFProDisplay-Medium.ttf"),
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <LoadAssets {...{ fonts, assets }}>
+        <SafeAreaProvider>
+          <AuthenticationNavigator />
+        </SafeAreaProvider>
+      </LoadAssets> 
+    </ThemeProvider>   
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
