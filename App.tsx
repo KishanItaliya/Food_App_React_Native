@@ -1,8 +1,12 @@
-import React from 'react';
-import { AuthenticationNavigator, assets as authenticationAssets } from './src/Authentication';
-import { LoadAssets, theme } from './src/components';
-import { ThemeProvider } from '@shopify/restyle';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import {
+  AuthenticationNavigator,
+  assets as authenticationAssets,
+} from "./src/Authentication";
+import { LoadAssets } from "./src/components";
+import { theme } from "./src/components/Theme";
+import { ThemeProvider } from "@shopify/restyle";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const assets = [...authenticationAssets];
 
@@ -20,9 +24,7 @@ export default function App() {
         <SafeAreaProvider>
           <AuthenticationNavigator />
         </SafeAreaProvider>
-      </LoadAssets> 
-    </ThemeProvider>   
+      </LoadAssets>
+    </ThemeProvider>
   );
 }
-
-
