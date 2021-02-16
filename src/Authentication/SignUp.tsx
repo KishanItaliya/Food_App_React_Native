@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TextInput as RNTextInput } from "react-native";
 import { Button, Text, Container } from "../components";
 import { Box } from "../components/Theme";
 import TextInput from "./components/Form/TextInput";
@@ -10,8 +10,8 @@ import { Routes, StackNavigationProps } from "../components/Navigation";
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    justifyContent: "space-evenly",
+    flex: 1,
+    justifyContent: "center",
   },
 });
 
@@ -39,8 +39,8 @@ const SignUp = ({ navigation }: StackNavigationProps<Routes, "SignUp">) => {
     }
   );
 
-  const password = useRef<typeof TextInput>(null);
-  const passwordConfirmation = useRef<typeof TextInput>(null);
+  const password = useRef<RNTextInput>(null);
+  const passwordConfirmation = useRef<RNTextInput>(null);
 
   const footer = (
     <Footer
