@@ -1,12 +1,13 @@
 import React from "react";
 import { Image, Dimensions, StyleSheet } from "react-native";
-import { Box, Text, useTheme } from "../../components/Theme";
-import { Button } from "../../components";
-import { Routes, StackNavigationProps } from "../../components/Navigation";
+import { Box, Text, useTheme } from "../components/Theme";
+import { Button } from "../components";
+import { AuthNavigationProps } from "../components/Navigation";
+import { BorderlessButton } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("window");
 const picture = {
-  src: require("../assets/1.png"),
+  src: require("./assets/1.png"),
   width: 300,
   height: 300,
 };
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Welcome = ({ navigation }: StackNavigationProps<Routes, "Welcome">) => {
+const Welcome = ({ navigation }: AuthNavigationProps<"Welcome">) => {
   const theme = useTheme();
   return (
     <Box flex={1} backgroundColor="white">
@@ -66,12 +67,18 @@ const Welcome = ({ navigation }: StackNavigationProps<Routes, "Welcome">) => {
             label="Have an account ? Login"
             onPress={() => navigation.navigate("Login")}
           />
-          <Button label="Join us, it's Free" onPress={() => true} />
           <Button
-            variant="transparent"
-            label="Forgot password?"
-            onPress={() => true}
+            label="Join us, it's Free"
+            onPress={() => navigation.navigate("SignUp")}
           />
+          <BorderlessButton
+            style={{ marginTop: 10 }}
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
+            <Text variant="button" color="secondary">
+              Forgot password?
+            </Text>
+          </BorderlessButton>
         </Box>
       </Box>
     </Box>

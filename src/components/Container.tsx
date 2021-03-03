@@ -1,10 +1,15 @@
 import React, { ReactNode } from "react";
-import { Dimensions, Image, StyleSheet } from "react-native";
+import { Dimensions, Image, Platform, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box, useTheme } from "./Theme";
+import Constants from "expo-constants";
 
-export const assets = [require("../components/assets/patterns/1.jpg")];
+export const assets = [
+  require("../components/assets/patterns/1.jpg"),
+  require("../components/assets/patterns/1.jpg"),
+  require("../components/assets/patterns/1.jpg"),
+] as const;
 const { width, height: wHeight } = Dimensions.get("window");
 const aspectRatio = 750 / 1125;
 const height = width * aspectRatio;
@@ -12,26 +17,23 @@ const height = width * aspectRatio;
 interface ContainerProps {
   children: ReactNode;
   footer: ReactNode;
+  pattern: 0 | 1 | 2;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-  },
-});
-
-const Container = ({ children, footer }: ContainerProps) => {
+const Container = ({ children, footer, pattern }: ContainerProps) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const asset = assets[pattern];
   return (
     <KeyboardAwareScrollView
       showsVerticalScrollIndicator={false}
       scrollEnabled={false}
     >
       <Box
-        height={wHeight}
+        height={
+          wHeight + (Platform.OS === "android" ? Constants.statusBarHeight : 0)
+        }
         backgroundColor="secondary"
-        style={styles.container}
       >
         <Box backgroundColor="white">
           <Box
@@ -40,7 +42,7 @@ const Container = ({ children, footer }: ContainerProps) => {
             height={height * 0.61}
           >
             <Image
-              source={assets[0]}
+              source={asset}
               style={{
                 width,
                 height,
@@ -51,7 +53,7 @@ const Container = ({ children, footer }: ContainerProps) => {
         </Box>
         <Box flex={1} overflow="hidden">
           <Image
-            source={assets[0]}
+            source={asset}
             style={{
               ...StyleSheet.absoluteFillObject,
               width,
@@ -64,6 +66,8 @@ const Container = ({ children, footer }: ContainerProps) => {
             borderTopLeftRadius={0}
             backgroundColor="white"
             flex={1}
+            justifyContent="center"
+            padding="xl"
             // style={{ height: height * 0.6 }}
           >
             {children}
@@ -73,6 +77,7 @@ const Container = ({ children, footer }: ContainerProps) => {
         <Box
           backgroundColor="secondary"
           paddingTop="m"
+          paddingBottom="m" /* Remove this code if necessary */
           // style={{ height: height * 0.18 }}
         >
           {footer}

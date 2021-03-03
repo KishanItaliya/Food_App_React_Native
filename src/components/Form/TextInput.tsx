@@ -4,8 +4,8 @@ import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
 } from "react-native";
-import { Box } from "../../../components/Theme";
-import { useTheme } from "../../../components";
+import { Box } from "../Theme";
+import { RoundedIcon, useTheme } from "..";
 import { Feather as Icon } from "@expo/vector-icons";
 
 interface TextInputProps extends RNTextInputProps {
@@ -49,21 +49,28 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
         </Box>
 
         {touched && (
-          <Box
-            height={SIZE}
-            width={SIZE}
-            justifyContent="center"
-            alignItems="center"
+          <RoundedIcon
+            iconRatio={0.7}
+            name={!error ? "check" : "x"}
+            size={SIZE}
             backgroundColor={!error ? "primary" : "danger"}
-            style={{ borderRadius: SIZE / 2 }}
-          >
-            <Icon
-              name={!error ? "check" : "x"}
-              color="white"
-              size={16}
-              style={{ textAlign: "center" }}
-            />
-          </Box>
+            color="white"
+          />
+          // <Box
+          //   height={SIZE}
+          //   width={SIZE}
+          //   justifyContent="center"
+          //   alignItems="center"
+          //   backgroundColor={!error ? "primary" : "danger"}
+          //   style={{ borderRadius: SIZE / 2 }}
+          // >
+          //   <Icon
+          //     name={!error ? "check" : "x"}
+          //     color="white"
+          //     size={16}
+          //     style={{ textAlign: "center" }}
+          //   />
+          // </Box>
         )}
       </Box>
     );

@@ -8,13 +8,20 @@ import { ImageStyle, TextStyle, ViewStyle } from "react-native";
 export const theme = {
   colors: {
     primary: "#2CB9B0",
+    primaryLight: "rgba(44, 185, 176, 0.1)",
     secondary: "#0C0D34",
     text: "rgba(12, 13, 52, 0.7)",
     white: "#FFFFFF",
     danger: "#FF0058",
     grey: "#F4F0EF",
     // grey: "rgba(12, 13, 52, 0.05)",
+    lightGrey: "#FAFAFA",
     darkGrey: "#8A8D90",
+    orange: "#FE5E33",
+    yellow: "#FFC641",
+    pink: "#FF87A2",
+    violet: "#442CB9",
+    lightBlue: "#BFEAF5",
   },
   spacing: {
     s: 8,
@@ -47,6 +54,17 @@ export const theme = {
       fontFamily: "SFProDisplay-Semibold",
       color: "secondary",
     },
+    title3: {
+      fontSize: 24,
+      lineHeight: 30,
+      fontFamily: "SFProDisplay-Regular",
+      color: "secondary",
+    },
+    title4: {
+      fontSize: 18,
+      fontFamily: "SFProDisplay-Regular",
+      color: "darkGrey",
+    },
     body: {
       fontSize: 16,
       lineHeight: 24,
@@ -57,6 +75,18 @@ export const theme = {
       fontSize: 15,
       fontFamily: "SFProDisplay-Medium",
       color: "text",
+    },
+    warning: {
+      fontSize: 16,
+      lineHeight: 20,
+      fontFamily: "SFProDisplay-Regular",
+      color: "danger",
+    },
+    header: {
+      fontSize: 12,
+      lineHeight: 24,
+      fontFamily: "SFProDisplay-Semibold",
+      color: "secondary",
     },
   },
   breakpoints: {},
