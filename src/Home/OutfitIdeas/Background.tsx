@@ -6,14 +6,14 @@ const Background = () => {
   const theme = useTheme();
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Box flex={1 / 3} backgroundColor="yellow">
+      <Box flex={1 / 3} backgroundColor="darkOrange">
         <Box flex={1} backgroundColor="white" borderBottomRightRadius="xl" />
       </Box>
       <Box flex={1 / 3}>
         <Box flex={1} backgroundColor="white" />
         <Box flex={1} backgroundColor="secondary" />
         <Image
-          source={require("./assets/1.jpg")}
+          source={require("./assets/2.jpg")}
           style={{
             ...StyleSheet.absoluteFillObject,
             width: undefined,
@@ -23,7 +23,7 @@ const Background = () => {
           }}
         />
       </Box>
-      <Box flex={1 / 3} backgroundColor="yellow">
+      <Box flex={1 / 3} backgroundColor="darkOrange">
         <Box flex={1} backgroundColor="secondary" borderTopLeftRadius="xl" />
       </Box>
     </View>

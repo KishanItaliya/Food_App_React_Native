@@ -1,49 +1,18 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Image,
-  View,
-  TextInput,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import React from "react";
+import { StyleSheet, View, TextInput, FlatList, Keyboard } from "react-native";
 import { Box } from "../../components/Theme";
-import { Header, Text } from "../../components";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Header } from "../../components";
 import { Feather as Icon } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TouchableHighlight } from "react-native-gesture-handler";
 import { HomeNavigationProps } from "../../components/Navigation";
-
-export const categories = [
-  {
-    id: "1",
-    name: "Pizza",
-    image: require("./assets/catergories/pizza.png"),
-  },
-  {
-    id: "2",
-    name: "Burger",
-    image: require("./assets/catergories/burger.png"),
-  },
-  {
-    id: "3",
-    name: "Sushi",
-    image: require("./assets/catergories/sushi.png"),
-  },
-  {
-    id: "4",
-    name: "Salad",
-    image: require("./assets/catergories/salad.png"),
-  },
-];
+import ItemsCard from "./ItemsCard";
+import ListCategories from "./ListCategories";
+import { icons, images } from "../../constants";
 
 export const COLORS = {
   white: "#FFF",
   dark: "#000",
-  primary: "#F9813A",
+  primary: "#F9813A", //"#FC6D3F"
   secondary: "#FEDAC5",
   light: "#E5E5E5",
   grey: "#908E8C",
@@ -54,164 +23,339 @@ export const foods = [
     id: "1",
     name: "Meat Pizza",
     ingredients: "Mixed Pizza",
-    price: "8.30",
+    price: 120,
     image: require("./assets/meatPizza.png"),
   },
   {
     id: "2",
     name: "Cheese Pizza",
     ingredients: "Cheese Pizza",
-    price: "7.10",
+    price: 150,
     image: require("./assets/cheesePizza.png"),
   },
   {
     id: "3",
     name: "Chicken Burger",
     ingredients: "Fried Chicken",
-    price: "5.10",
+    price: 84,
     image: require("./assets/chickenBurger.png"),
   },
   {
     id: "4",
     name: "Sushi Makizushi",
     ingredients: "Salmon Meat",
-    price: "9.55",
+    price: 262,
     image: require("./assets/sushiMakizushi.png"),
   },
 ];
 
-const { width } = Dimensions.get("screen");
-const cardWidth = width / 2 - 20;
+const categoryData = [
+  {
+    id: 1,
+    name: "Rice",
+    icon: icons.rice_bowl,
+  },
+  {
+    id: 2,
+    name: "Noodles",
+    icon: icons.noodle,
+  },
+  {
+    id: 3,
+    name: "Hot Dogs",
+    icon: icons.hotdog,
+  },
+  {
+    id: 4,
+    name: "Salads",
+    icon: icons.salad,
+  },
+  {
+    id: 5,
+    name: "Burgers",
+    icon: icons.hamburger,
+  },
+  {
+    id: 6,
+    name: "Pizza",
+    icon: icons.pizza,
+  },
+  {
+    id: 7,
+    name: "Snacks",
+    icon: icons.fries,
+  },
+  {
+    id: 8,
+    name: "Sushi",
+    icon: icons.sushi,
+  },
+  {
+    id: 9,
+    name: "Desserts",
+    icon: icons.donut,
+  },
+  {
+    id: 10,
+    name: "Drinks",
+    icon: icons.drink,
+  },
+];
+
+// price rating
+const affordable = 1;
+const fairPrice = 2;
+const expensive = 3;
+
+const restaurantData = [
+  {
+    id: 1,
+    name: "ByProgrammers Burger",
+    rating: 4.8,
+    categories: [5, 7],
+    priceRating: affordable,
+    photo: images.burger_restaurant_1,
+    duration: "30 - 45 min",
+    location: {
+      latitude: 1.5347282806345879,
+      longitude: 110.35632207358996,
+    },
+    courier: {
+      avatar: images.avatar_1,
+      name: "Amy",
+    },
+    menu: [
+      {
+        menuId: 1,
+        name: "Crispy Chicken Burger",
+        photo: images.crispy_chicken_burger,
+        description: "Burger with crispy chicken, cheese and lettuce",
+        calories: 200,
+        price: 10,
+      },
+      {
+        menuId: 2,
+        name: "Crispy Chicken Burger with Honey Mustard",
+        photo: images.honey_mustard_chicken_burger,
+        description: "Crispy Chicken Burger with Honey Mustard Coleslaw",
+        calories: 250,
+        price: 15,
+      },
+      {
+        menuId: 3,
+        name: "Crispy Baked French Fries",
+        photo: images.baked_fries,
+        description: "Crispy Baked French Fries",
+        calories: 194,
+        price: 8,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "ByProgrammers Pizza",
+    rating: 4.8,
+    categories: [2, 4, 6],
+    priceRating: expensive,
+    photo: images.pizza_restaurant,
+    duration: "15 - 20 min",
+    location: {
+      latitude: 1.556306570595712,
+      longitude: 110.35504616746915,
+    },
+    courier: {
+      avatar: images.avatar_2,
+      name: "Jackson",
+    },
+    menu: [
+      {
+        menuId: 4,
+        name: "Hawaiian Pizza",
+        photo: images.hawaiian_pizza,
+        description: "Canadian bacon, homemade pizza crust, pizza sauce",
+        calories: 250,
+        price: 15,
+      },
+      {
+        menuId: 5,
+        name: "Tomato & Basil Pizza",
+        photo: images.pizza,
+        description:
+          "Fresh tomatoes, aromatic basil pesto and melted bocconcini",
+        calories: 250,
+        price: 20,
+      },
+      {
+        menuId: 6,
+        name: "Tomato Pasta",
+        photo: images.tomato_pasta,
+        description: "Pasta with fresh tomatoes",
+        calories: 100,
+        price: 10,
+      },
+      {
+        menuId: 7,
+        name: "Mediterranean Chopped Salad ",
+        photo: images.salad,
+        description: "Finely chopped lettuce, tomatoes, cucumbers",
+        calories: 100,
+        price: 10,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "ByProgrammers Hotdogs",
+    rating: 4.8,
+    categories: [3],
+    priceRating: expensive,
+    photo: images.hot_dog_restaurant,
+    duration: "20 - 25 min",
+    location: {
+      latitude: 1.5238753474714375,
+      longitude: 110.34261833833622,
+    },
+    courier: {
+      avatar: images.avatar_3,
+      name: "James",
+    },
+    menu: [
+      {
+        menuId: 8,
+        name: "Chicago Style Hot Dog",
+        photo: images.chicago_hot_dog,
+        description: "Fresh tomatoes, all beef hot dogs",
+        calories: 100,
+        price: 20,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "ByProgrammers Sushi",
+    rating: 4.8,
+    categories: [8],
+    priceRating: expensive,
+    photo: images.japanese_restaurant,
+    duration: "10 - 15 min",
+    location: {
+      latitude: 1.5578068150528928,
+      longitude: 110.35482523764315,
+    },
+    courier: {
+      avatar: images.avatar_4,
+      name: "Ahmad",
+    },
+    menu: [
+      {
+        menuId: 9,
+        name: "Sushi sets",
+        photo: images.sushi,
+        description: "Fresh salmon, sushi rice, fresh juicy avocado",
+        calories: 100,
+        price: 50,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "ByProgrammers Cuisine",
+    rating: 4.8,
+    categories: [1, 2],
+    priceRating: affordable,
+    photo: images.noodle_shop,
+    duration: "15 - 20 min",
+    location: {
+      latitude: 1.558050496260768,
+      longitude: 110.34743759630511,
+    },
+    courier: {
+      avatar: images.avatar_4,
+      name: "Muthu",
+    },
+    menu: [
+      {
+        menuId: 10,
+        name: "Kolo Mee",
+        photo: images.kolo_mee,
+        description: "Noodles with char siu",
+        calories: 200,
+        price: 5,
+      },
+      {
+        menuId: 11,
+        name: "Sarawak Laksa",
+        photo: images.sarawak_laksa,
+        description: "Vermicelli noodles, cooked prawns",
+        calories: 300,
+        price: 8,
+      },
+      {
+        menuId: 12,
+        name: "Nasi Lemak",
+        photo: images.nasi_lemak,
+        description: "A traditional Malay rice dish",
+        calories: 300,
+        price: 8,
+      },
+      {
+        menuId: 13,
+        name: "Nasi Briyani with Mutton",
+        photo: images.nasi_briyani_mutton,
+        description: "A traditional Indian rice dish with mutton",
+        calories: 300,
+        price: 8,
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "ByProgrammers Dessets",
+    rating: 4.9,
+    categories: [9, 10],
+    priceRating: affordable,
+    photo: images.kek_lapis_shop,
+    duration: "35 - 40 min",
+    location: {
+      latitude: 1.5573478487252896,
+      longitude: 110.35568783282145,
+    },
+    courier: {
+      avatar: images.avatar_1,
+      name: "Jessie",
+    },
+    menu: [
+      {
+        menuId: 12,
+        name: "Teh C Peng",
+        photo: images.teh_c_peng,
+        description: "Three Layer Teh C Peng",
+        calories: 100,
+        price: 2,
+      },
+      {
+        menuId: 13,
+        name: "ABC Ice Kacang",
+        photo: images.ice_kacang,
+        description: "Shaved Ice with red beans",
+        calories: 100,
+        price: 3,
+      },
+      {
+        menuId: 14,
+        name: "Kek Lapis",
+        photo: images.kek_lapis,
+        description: "Layer cakes",
+        calories: 300,
+        price: 20,
+      },
+    ],
+  },
+];
 
 const FoodItems = ({ navigation }: HomeNavigationProps<"FoodItems">) => {
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
-  // const count = 0;
-  // const [cart, setCart] = useState({});
-
-  // const storeData = async (value: any) => {
-  //   try {
-  //     const jsonValue = JSON.stringify(value);
-  //     await AsyncStorage.setItem("cart", jsonValue);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // const getData = async () => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem("cart");
-  //     return jsonValue != null ? console.log(JSON.parse(jsonValue)) : null;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // const addToCart = (itemId: string) => {
-  //   setCart({
-  //     id: itemId,
-  //     count: count + 1,
-  //   });
-  //   storeData(cart);
-  //   getData();
-  // };
-
-  const ListCategories = () => {
-    return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoriesListContainer}
-      >
-        {categories.map((category, index) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => setSelectedCategoryIndex(index)}
-          >
-            <View
-              style={{
-                backgroundColor:
-                  selectedCategoryIndex == index
-                    ? COLORS.primary
-                    : COLORS.secondary,
-                ...styles.categoryBtn,
-              }}
-            >
-              <View style={styles.categoryBtnImage}>
-                <Image
-                  source={category.image}
-                  style={{ height: 35, width: 35, resizeMode: "cover" }}
-                />
-              </View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  marginLeft: 10,
-                  color:
-                    selectedCategoryIndex == index
-                      ? COLORS.white
-                      : COLORS.primary,
-                }}
-              >
-                {category.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    );
-  };
-
-  const Card = ({ food }: any) => {
-    return (
-      <View style={styles.card}>
-        <TouchableHighlight
-          underlayColor={COLORS.white}
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate("ItemDetails", food)}
-        >
-          <View style={{ marginTop: 10 }}>
-            <View style={{ alignItems: "center", marginBottom: 5 }}>
-              <Image source={food.image} style={{ height: 100, width: 100 }} />
-            </View>
-            <View style={{ marginHorizontal: 20 }}>
-              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                {food.name}
-              </Text>
-              <Text style={{ fontSize: 14, color: COLORS.grey, marginTop: 2 }}>
-                {food.ingredients}
-              </Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-
-        <View
-          style={{
-            marginTop: 5,
-            marginHorizontal: 20,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-            ${food.price}
-          </Text>
-          <View style={styles.addToCartBtn}>
-            <MaterialIcons
-              name="add"
-              size={25}
-              color={COLORS.white}
-              onPress={() => alert()}
-            />
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   return (
-    <Box flex={1} backgroundColor="white">
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       {/* <Box style={[styles.header, { marginTop: insets.top + 15 }]}>
         <Box>
           <Box flexDirection="row">
@@ -230,28 +374,31 @@ const FoodItems = ({ navigation }: HomeNavigationProps<"FoodItems">) => {
         left={{ icon: "menu", onPress: () => navigation.openDrawer() }}
         right={{ icon: "shopping-bag", onPress: () => true }}
       />
-      <Box marginTop="l" flexDirection="row" paddingHorizontal="m">
+      {/* <Box marginTop="l" flexDirection="row" paddingHorizontal="m">
         <View style={styles.inputContainer}>
           <Icon name="search" size={24} />
           <TextInput
             style={{ flex: 1, fontSize: 18, marginLeft: 5 }}
             placeholder="Search for food"
+            onTouchStart={() => {
+              Keyboard.dismiss(), navigation.navigate("SearchScreen");
+            }}
           />
         </View>
         <View style={styles.sortBtn}>
           <MaterialIcons name="tune" size={24} color={COLORS.white} />
         </View>
-      </Box>
-      <Box>
+      </Box> */}
+      <View>
         <ListCategories />
-      </Box>
-      <FlatList
+      </View>
+      {/* <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={foods}
-        renderItem={({ item }) => <Card food={item} />}
-      />
-    </Box>
+        renderItem={({ item }) => <ItemsCard food={item} />}
+      /> */}
+    </View>
   );
 };
 
@@ -283,46 +430,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: COLORS.primary,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  categoriesListContainer: {
-    paddingVertical: 30,
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  categoryBtn: {
-    height: 45,
-    width: 120,
-    marginRight: 7,
-    borderRadius: 30,
-    alignItems: "center",
-    paddingHorizontal: 5,
-    flexDirection: "row",
-  },
-  categoryBtnImage: {
-    height: 35,
-    width: 35,
-    backgroundColor: COLORS.white,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    height: 200,
-    width: cardWidth,
-    marginHorizontal: 10,
-    marginBottom: 15,
-    marginTop: 15,
-    borderRadius: 15,
-    elevation: 13,
-    backgroundColor: COLORS.white,
-  },
-  addToCartBtn: {
-    height: 30,
-    width: 30,
-    borderRadius: 20,
-    backgroundColor: COLORS.primary,
     justifyContent: "center",
     alignItems: "center",
   },

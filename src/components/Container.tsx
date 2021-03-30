@@ -77,7 +77,7 @@ const Container = ({ children, footer, pattern }: ContainerProps) => {
         <Box
           backgroundColor="secondary"
           paddingTop="m"
-          paddingBottom="m" /* Remove this code if necessary */
+          paddingBottom="l" /* Remove this code if necessary */
           // style={{ height: height * 0.18 }}
         >
           {footer}

@@ -22,6 +22,15 @@ export const getData = async () => {
   }
 };
 
+const removeData = async () => {
+  try {
+    await AsyncStorage.removeItem("user");
+    console.log("USER REMOVED FROM STORAGE");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const SignUpUser = (email: string, password: string) => {
   firebase
     .auth()
@@ -30,8 +39,10 @@ export const SignUpUser = (email: string, password: string) => {
       firebase
         .firestore()
         .collection("Users")
+        // .doc(user.user?.uid)
         .add({
           name: user.user?.email,
+          id: user.user?.uid,
         })
         .then(() => {
           console.log("User added");
@@ -53,24 +64,34 @@ export const SignUpUser = (email: string, password: string) => {
     });
 };
 
-export const LogInUser = (email: string, password: string) => {
+export function LogInUser(email: string, password: string) {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      storeData(user.user);
+    .then((auth) => {
+      storeData(auth.user);
       getData();
     })
     .catch((error) => {
       console.log(error);
+    });
+}
+
+export const signOut = () => {
+  removeData();
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      console.log("LOGGED OUT!!");
     });
 };
 
 export const submitReview = (
   review: string,
   rating: string,
-  itemId: any,
-  status: string,
+  name: any,
+  status: any,
   userId: any
 ) => {
   // const getStatus = async () => {
@@ -99,24 +120,68 @@ export const submitReview = (
   // getStatus();
 
   // console.log(status);
+  if (status != undefined) {
+    if (status == "Positive Review") {
+      firebase
+        .firestore()
+        .collection("reviews")
+        .doc(name)
+        .collection("positive")
+        .doc()
+        .set({
+          review: review,
+          rating: rating,
+          name: name,
+          userId: userId,
+          status: status,
+          time: Date.now(),
+        })
+        .then(() => {
+          console.log("Review submitted successfully!!");
+          alert("Review submitted successfully!!");
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+          alert("Review Not submitted!!");
+        });
+    } else {
+      firebase
+        .firestore()
+        .collection("reviews")
+        .doc(name)
+        .collection("negative")
+        .doc()
+        .set({
+          review: review,
+          rating: rating,
+          name: name,
+          userId: userId,
+          status: status,
+          time: Date.now(),
+        })
+        .then(() => {
+          console.log("Review submitted successfully!!");
+          alert("Review submitted successfully!!");
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+          alert("Review Not submitted!!");
+        });
+    }
+  } else {
+    alert("Please submit review again!!");
+  }
+};
 
+export const passwordReset = (email: string) => {
   firebase
-    .firestore()
-    .collection("reviews")
-    .doc()
-    .set({
-      review: review,
-      rating: rating,
-      itemId: itemId,
-      userId: userId,
-      status: status,
-      time: Date.now(),
-    })
-    .then(() => {
-      console.log("Review submitted successfully!!");
-      alert("Review submitted successfully!!");
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then((user) => {
+      console.log(user);
     })
     .catch((error) => {
-      console.log("ERROR", error);
+      console.log(error);
+      alert("Please Sign Up First!!");
     });
 };

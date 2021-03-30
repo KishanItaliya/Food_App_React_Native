@@ -5,7 +5,7 @@ import { Box, Text, useTheme } from "../../components/Theme";
 import DrawerItem, { DrawerItemProps } from "./DrawerItem";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 
-export const assets = [require("./assets/1.jpg")];
+export const assets = [require("./assets/2.jpg")];
 const { width } = Dimensions.get("window");
 export const DRAWER_WIDTH = width * 0.8;
 const aspectRatio = 750 / 1125;
@@ -45,7 +45,7 @@ const items: DrawerItemProps[] = [
   {
     icon: "log-out",
     label: "Logout",
-    screen: "FavoriteOutfits",
+    screen: "LogOut",
     color: "secondary",
   },
 ];
@@ -78,7 +78,7 @@ const Drawer = () => {
       </Box>
       <Box flex={0.8}>
         <Box flex={1} backgroundColor="secondary" />
-        <Box flex={1} backgroundColor="yellow" />
+        <Box flex={1} backgroundColor="darkOrange" />
         <Box
           position="absolute"
           top={0}

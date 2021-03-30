@@ -38,10 +38,10 @@ const PasswordChanged = ({
         marginBottom="s"
         marginVertical="l"
       >
-        Your password was successfully changed
+        Link has been sent to your Email
       </Text>
       <Text variant="body" textAlign="center" marginBottom="m">
-        Close the window and login again
+        Reset your password and login again
       </Text>
       <Box alignItems="center">
         <Button

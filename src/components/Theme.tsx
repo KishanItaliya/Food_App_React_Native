@@ -18,10 +18,12 @@ export const theme = {
     lightGrey: "#FAFAFA",
     darkGrey: "#8A8D90",
     orange: "#FE5E33",
+    darkOrange: "#F9813A",
     yellow: "#FFC641",
     pink: "#FF87A2",
     violet: "#442CB9",
     lightBlue: "#BFEAF5",
+    sprimary: "#F9813A",
   },
   spacing: {
     s: 8,
@@ -64,6 +66,11 @@ export const theme = {
       fontSize: 18,
       fontFamily: "SFProDisplay-Regular",
       color: "darkGrey",
+    },
+    title5: {
+      fontSize: 16,
+      fontFamily: "SFProDisplay-Semibold",
+      color: "secondary",
     },
     body: {
       fontSize: 16,

@@ -32,7 +32,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
     validationSchema: LoginSchema,
     initialValues: { email: "", password: "", remember: false },
     onSubmit: (values) => {
-      LogInUser(values.email, values.password), navigation.navigate("Home");
+      LogInUser(values.email, values.password);
     },
   });
 

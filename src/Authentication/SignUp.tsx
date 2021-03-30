@@ -33,7 +33,7 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
         passwordConfirmation: "",
       },
       onSubmit: (values) => {
-        SignUpUser(values.email, values.password), navigation.navigate("Home");
+        SignUpUser(values.email, values.password);
       },
     }
   );

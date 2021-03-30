@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RoundedIcon, BorderlessTap } from "../../components";
 import { HomeRoutes } from "../../components/Navigation";
 import { Box, Theme, Text, useTheme } from "../../components/Theme";
+import { LogOut } from "../../firebase/authentication";
 
 export interface DrawerItemProps {
   icon: string;
@@ -18,7 +19,9 @@ const DrawerItem = ({ icon, color, screen, label }: DrawerItemProps) => {
     DrawerNavigationProp<HomeRoutes, "OutfitIdeas">
   >();
   return (
-    <BorderlessTap onPress={() => navigate(screen)}>
+    <BorderlessTap
+      onPress={screen == "LogOut" ? () => LogOut() : () => navigate(screen)}
+    >
       <Box flexDirection="row" alignItems="center" padding="s">
         <RoundedIcon
           iconRatio={0.5}

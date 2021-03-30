@@ -1,18 +1,30 @@
 export const initialState = {
   basket: [],
+  order: [],
   user: null,
-  userInfo: null,
 };
 
-// export const getBasketTotal = (basket) =>
-//     basket?.reduce((amount, item) => item.price + amount , 0);
+export const getBasketTotal = (basket: any) =>
+  basket?.reduce((amount: number, item: any) => item.price + amount, 0);
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case "ADD_TO_BASKET":
       return {
         ...state,
-        basket: [...state.basket, action.item],
+        basket: [...state.basket, action.product],
+      };
+
+    case "ADD_TO_ORDER":
+      return {
+        ...state,
+        order: [...state.order, action.restaurant],
+      };
+
+    case "EMPTY_ORDER":
+      return {
+        ...state,
+        order: [],
       };
 
     case "EMPTY_BASKET":
@@ -34,6 +46,7 @@ const reducer = (state: any, action: any) => {
           `Can not remove product (id: ${action.id}) as its not in basket!`
         );
       }
+      console.log("Removed Successfully");
 
       return {
         ...state,
@@ -44,12 +57,6 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         user: action.user,
-      };
-
-    case "SET_USER_INFO":
-      return {
-        ...state,
-        userInfo: action.userInfo,
       };
 
     default:

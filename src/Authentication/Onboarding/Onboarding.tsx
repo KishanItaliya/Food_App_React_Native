@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   underlay: {
     ...StyleSheet.absoluteFillObject,
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     borderBottomRightRadius: theme.borderRadii.xl,
-    overflow: "hidden",
+    // overflow: "hidden",
   },
   footer: {
     flex: 1,
@@ -51,49 +51,49 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const slides = [
   {
-    title: "Delicious",
-    subtitle: "Order Food",
+    title: "", //Delicious
+    subtitle: "Choose Your Meal",
     description:
       "Hungry? Order food in just a few clicks and we'll take care of you..",
     color: "#72BCD4",
     picture: {
-      src: require("../assets/1.png"),
-      width: 2513,
-      height: 3583,
+      src: require("../assets/21.png"),
+      width: 4875,
+      height: 3883,
     },
   },
   {
-    title: "Fast",
+    title: "", //Fast
     subtitle: "Track Delivery",
     description: "Track your food order in real-time with an interactive map.",
     color: "#FFB6C1",
     picture: {
-      src: require("../assets/2.png"),
-      width: 2513,
-      height: 3583,
+      src: require("../assets/23.png"),
+      width: 5025,
+      height: 3920,
     },
   },
+  // {
+  //   title: "Excentric",
+  //   subtitle: "Reorder and Save",
+  //   description: "Reorder in one click. Bookmark your favorite restaurants.",
+  //   color: "#79C879",
+  //   picture: {
+  //     src: require("../assets/3.png"),
+  //     width: 2513,
+  //     height: 3583,
+  //   },
+  // },
   {
-    title: "Excentric",
-    subtitle: "Reorder and Save",
-    description: "Reorder in one click. Bookmark your favorite restaurants.",
-    color: "#79C879",
-    picture: {
-      src: require("../assets/3.png"),
-      width: 2513,
-      height: 3583,
-    },
-  },
-  {
-    title: "Support",
+    title: "", //Support
     subtitle: "Seamless Payments",
     description:
       "Pay with your credit cards, Apple Pay or Android Pay, with one click.",
     color: "#FFC04C",
     picture: {
-      src: require("../assets/1.png"),
-      width: 470,
-      height: 463,
+      src: require("../assets/22.png"),
+      width: 5025,
+      height: 3965,
     },
   },
 ];
@@ -130,7 +130,7 @@ const Onboarding = ({ navigation }: AuthNavigationProps<"Onboarding">) => {
                 style={{
                   width: width - theme.borderRadii.xl,
                   height:
-                    ((width - theme.borderRadii.xl) * picture.height) /
+                    ((width - theme.borderRadii.s) * picture.height) /
                     picture.width,
                 }}
               />

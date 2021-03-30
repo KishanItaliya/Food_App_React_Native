@@ -28,6 +28,9 @@ const ReviewCard = ({ review }: any) => {
             ({review.rating})
           </Text>
         </View>
+        <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+          {review.status.slice(0, 9)}
+        </Text>
       </View>
     </View>
   );

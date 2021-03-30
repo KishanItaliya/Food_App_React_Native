@@ -7,9 +7,9 @@ import { BorderlessButton } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("window");
 const picture = {
-  src: require("./assets/1.png"),
-  width: 300,
-  height: 300,
+  src: require("./assets/24.png"),
+  width: 4875,
+  height: 4825,
 };
 
 export const assets = [picture.src];
@@ -30,7 +30,7 @@ const Welcome = ({ navigation }: AuthNavigationProps<"Welcome">) => {
         borderBottomRightRadius="xl"
         backgroundColor="grey"
         alignItems="center"
-        justifyContent="flex-end"
+        justifyContent="center"
       >
         <Image
           source={picture.src}

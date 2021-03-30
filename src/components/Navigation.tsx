@@ -17,12 +17,12 @@ export interface HomeNavigationProps<RouteName extends keyof HomeRoutes> {
   route: RouteProp<HomeRoutes, RouteName>;
 }
 
-export interface HomeStackNavigationProps<
-  RouteName extends keyof HomeStackRoutes
-> {
-  navigation: StackNavigationProp<HomeStackRoutes, RouteName>;
-  route: RouteProp<HomeStackRoutes, RouteName>;
-}
+// export interface HomeStackNavigationProps<
+//   RouteName extends keyof HomeStackRoutes
+// > {
+//   navigation: StackNavigationProp<HomeStackRoutes, RouteName>;
+//   route: RouteProp<HomeStackRoutes, RouteName>;
+// }
 
 export type AppRoutes = {
   Authentication: undefined;
@@ -36,18 +36,29 @@ export type AuthenticationRoutes = {
   SignUp: undefined;
   ForgotPassword: undefined;
   PasswordChanged: undefined;
+  Loading: undefined;
 };
 
 export type HomeRoutes = {
-  OutfitIdeas: undefined;
-  FavoriteOutfits: undefined;
-  TransactionHistory: undefined;
+  Home: undefined;
   FoodItems: undefined;
+  Restaurant: undefined;
+  ReviewScreen: undefined;
+  Reviews: undefined;
+  OrderDelivery: undefined;
+  TransactionHistory: undefined;
   Cart: undefined;
-  ItemDetails: undefined;
-};
-
-export type HomeStackRoutes = {
+  SearchScreen: undefined;
+  FoodItemsTabNavigator: undefined;
+  Setting: undefined;
   ExploreScreen: undefined;
   ClassifyReviewTabNavigator: undefined;
+  ItemDetails: undefined;
+  OutfitIdeas: undefined;
+  FavoriteOutfits: undefined;
 };
+
+// export type HomeStackRoutes = {
+//   ExploreScreen: undefined;
+//   ClassifyReviewTabNavigator: undefined;
+// };

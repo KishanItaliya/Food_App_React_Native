@@ -7,6 +7,7 @@ import { AuthNavigationProps } from "../components/Navigation";
 import Footer from "./components/Footer";
 import TextInput from "../components/Form/TextInput";
 import { Box } from "../components/Theme";
+import { passwordReset } from "../firebase/authentication";
 
 const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -15,13 +16,20 @@ const ForgotPasswordSchema = Yup.object().shape({
 const ForgotPassword = ({
   navigation,
 }: AuthNavigationProps<"ForgotPassword">) => {
-  const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
-    {
-      validationSchema: ForgotPasswordSchema,
-      initialValues: { email: "" },
-      onSubmit: () => navigation.navigate("PasswordChanged"),
-    }
-  );
+  const {
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    errors,
+    touched,
+    values,
+  } = useFormik({
+    validationSchema: ForgotPasswordSchema,
+    initialValues: { email: "" },
+    onSubmit: () => {
+      passwordReset(values.email), navigation.navigate("PasswordChanged");
+    },
+  });
 
   const footer = (
     <Footer

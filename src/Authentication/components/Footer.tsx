@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "../../components/Theme";
 import { Text } from "../../components";
-import SocialLogin from "./SocialLogin";
+// import SocialLogin from "./SocialLogin";
 import { BorderlessButton } from "react-native-gesture-handler";
 
 interface FooterProps {
@@ -13,7 +13,7 @@ interface FooterProps {
 const Footer = ({ onPress, title, action }: FooterProps) => {
   return (
     <>
-      <SocialLogin />
+      {/* <SocialLogin /> */}
       <Box alignItems="center" marginTop="m" marginBottom="s">
         <BorderlessButton {...{ onPress }}>
           <Text variant="button" color="white">
