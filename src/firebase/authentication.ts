@@ -31,37 +31,79 @@ const removeData = async () => {
   }
 };
 
-export const SignUpUser = (email: string, password: string) => {
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then((user) =>
-      firebase
-        .firestore()
-        .collection("Users")
-        // .doc(user.user?.uid)
-        .add({
-          name: user.user?.email,
-          id: user.user?.uid,
-        })
-        .then(() => {
-          console.log("User added");
-          storeData(user.user);
-          getData();
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    )
-    .catch((error) => {
-      if (error.code === "auth/email-already-in-use") {
-        alert("That email address is already in use!");
-      }
+export const SignUpUser = async (
+  email: string,
+  password: string,
+  avatar: any
+) => {
+  // firebase
+  //   .auth()
+  //   .createUserWithEmailAndPassword(email, password)
+  //   .then((user) =>
+  //     firebase
+  //       .firestore()
+  //       .collection("Users")
+  //       // .doc(user.user?.uid)
+  //       .add({
+  //         name: user.user?.email,
+  //         id: user.user?.uid,
+  //       })
+  //       .then(() => {
+  //         console.log("User added");
+  //         storeData(user.user);
+  //         getData();
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       })
+  //   )
+  //   .catch((error) => {
+  //     if (error.code === "auth/email-already-in-use") {
+  //       alert("That email address is already in use!");
+  //     }
 
-      if (error.code === "auth/invalid-email") {
-        alert("That email address is invalid!");
-      }
+  //     if (error.code === "auth/invalid-email") {
+  //       alert("That email address is invalid!");
+  //     }
+  //   });
+
+  let remoteUri = null;
+  let userId;
+  console.log("AVATAR", avatar);
+
+  try {
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        userId = user?.user?.uid;
+        storeData(user.user);
+        getData();
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          alert("That email address is already in use!");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          alert("That email address is invalid!");
+        }
+      });
+
+    let db = firebase.firestore().collection("users").doc(userId);
+    db.set({
+      email: email,
+      avatar: null,
+      username: null,
+      address: null,
     });
+    if (avatar) {
+      remoteUri = await uploadPhotoAsync(avatar, `avatars/${userId}`);
+      db.set({ avatar: remoteUri }, { merge: true });
+    }
+  } catch (err) {
+    alert("Error: ", err);
+  }
 };
 
 export function LogInUser(email: string, password: string) {
@@ -184,4 +226,75 @@ export const passwordReset = (email: string) => {
       console.log(error);
       alert("Please Sign Up First!!");
     });
+};
+
+export const uploadPhotoAsync = async (uri: any, filename: any) => {
+  return new Promise(async (res, rej) => {
+    const response = await fetch(uri);
+    const file = await response.blob();
+
+    let upload = firebase.storage().ref(filename).put(file);
+
+    upload.on(
+      "state_changed",
+      (snapshot) => {},
+      (err) => {
+        rej(err);
+      },
+      async () => {
+        const url = await upload.snapshot.ref.getDownloadURL();
+        res(url);
+      }
+    );
+  });
+};
+
+export const createUser = async (user) => {
+  let remoteUri = null;
+
+  try {
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(user.email, user.password);
+
+    let db = firebase.firestore().collection("users").doc(uid);
+
+    db.set({
+      name: user.name,
+      email: user.email,
+      avatar: null,
+    });
+
+    if (user.avatar) {
+      remoteUri = await uploadPhotoAsync(user.avatar, `avatars/${uid}`);
+      db.set({ avatar: remoteUri }, { merge: true });
+    }
+  } catch (error) {
+    alert("Error: ", error);
+  }
+};
+
+export const updateUser = async (userId: any, username: any, address: any) => {
+  // let remoteUri = null;
+
+  try {
+    let db = firebase.firestore().collection("users").doc(userId);
+
+    db.set(
+      {
+        username: username,
+        address: address,
+      },
+      { merge: true }
+    );
+    alert("Profile updated successfully");
+
+    // if (avatar) {
+    //   remoteUri = await uploadPhotoAsync(avatar, `avatars/${userId}`);
+    //   db.set({ avatar: remoteUri }, { merge: true });
+    // }
+    // alert("Profile updated successfully");
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
 };

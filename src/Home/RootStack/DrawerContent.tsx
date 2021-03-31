@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Dimensions, StyleSheet, Image, View } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { DrawerActions } from "@react-navigation/native";
 import { Drawer } from "react-native-paper";
@@ -9,7 +9,7 @@ import { Header } from "../../components";
 import FontAwesomeRoundedIcon from "../../components/FontAwesomeRoundedIcon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IoniconsRoundedIcon from "../../components/IoniconsRoundedIcon";
-import moment from "moment";
+import firebase from "../../firebase/config";
 
 const assets = [require("./assets/orange.png")];
 const { width } = Dimensions.get("window");
@@ -19,7 +19,10 @@ const height = DRAWER_WIDTH * aspectRatio;
 
 const DrawerContent = (props: any) => {
   const [userEmail, setEmailId]: any = useState();
+  const [userId, setUserId]: any = useState();
   const theme = useTheme();
+
+  const [profile, setProfile] = useState<any>();
 
   const getUser = async () => {
     try {
@@ -30,11 +33,43 @@ const DrawerContent = (props: any) => {
     }
   };
 
+  const fetchProfile = () => {
+    getUser()
+      .then((user) => {
+        // console.log("UU", user?.uid);
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(user?.uid)
+          .onSnapshot((snapshot) => {
+            if (snapshot.exists) {
+              setProfile({
+                id: user?.uid,
+                data: snapshot?.data(),
+              });
+            } else {
+              setProfile({
+                id: user?.uid,
+                data: null,
+              });
+            }
+          });
+      })
+      .catch((error) => console.log("ERROR", error));
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
   getUser()
     .then((user) => {
       setEmailId(user?.email);
+      setUserId(user?.uid);
     })
     .catch((error) => console.log("ERROR", error));
+
+  // console.log("PROFILE>>", profile);
 
   return (
     <Box flex={1}>
@@ -75,18 +110,19 @@ const DrawerContent = (props: any) => {
           justifyContent="center"
           padding="xl"
         >
-          <Box
-            position="absolute"
-            top={-35}
-            left={DRAWER_WIDTH / 2 - 40}
-            backgroundColor="lightBlue"
-            width={70}
-            height={70}
-            style={{ borderRadius: 40 }}
-          />
+          <View style={styles.avatarPlaceholder}>
+            <Image
+              style={styles.avatar}
+              source={
+                profile?.data == null
+                  ? { uri: null }
+                  : { uri: profile?.data.avatar }
+              }
+            />
+          </View>
           <Box marginVertical="m">
             <Text variant="title1" textAlign="center">
-              Username
+              {profile?.data == null ? "Username" : profile?.data.username}
             </Text>
             <Text variant="body" textAlign="center">
               {userEmail}
@@ -113,15 +149,15 @@ const DrawerContent = (props: any) => {
               icon={() => (
                 <FontAwesomeRoundedIcon
                   iconRatio={0.6}
-                  name="book"
+                  name="user-circle"
                   size={36}
                   backgroundColor="pink"
                   color="white"
                 />
               )}
-              label="All Reviews"
+              label="Profile"
               onPress={() => {
-                props.navigation.navigate("Reviews");
+                props.navigation.navigate("Profile", { userId });
               }}
             />
             <DrawerItem
@@ -217,6 +253,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     paddingHorizontal: 16,
+  },
+  avatarPlaceholder: {
+    position: "absolute",
+    top: -35,
+    left: DRAWER_WIDTH / 2 - 40,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  avatar: {
+    position: "absolute",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
 });
 

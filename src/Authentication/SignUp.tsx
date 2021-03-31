@@ -1,5 +1,11 @@
-import React, { useRef } from "react";
-import { TextInput as RNTextInput } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  Pressable,
+  TextInput as RNTextInput,
+  Image,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Button, Text, Container } from "../components";
 import { Box } from "../components/Theme";
 import TextInput from "../components/Form/TextInput";
@@ -8,6 +14,9 @@ import * as Yup from "yup";
 import Footer from "./components/Footer";
 import { AuthNavigationProps } from "../components/Navigation";
 import { SignUpUser } from "../firebase/authentication";
+import { Ionicons } from "@expo/vector-icons";
+import { getCameraPermission } from "../Home/Profile/UserPermissions";
+import * as ImagePicker from "expo-image-picker";
 
 const SignUpSchema = Yup.object().shape({
   password: Yup.string()
@@ -23,6 +32,25 @@ const SignUpSchema = Yup.object().shape({
 const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
   const password = useRef<RNTextInput>(null);
   const passwordConfirmation = useRef<RNTextInput>(null);
+  const [user, setUser] = useState<any>({
+    avatar: null,
+  });
+
+  const handlePickAvatar = async () => {
+    getCameraPermission();
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) {
+      setUser({
+        avatar: result.uri,
+      });
+    }
+  };
 
   const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
     {
@@ -33,7 +61,7 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
         passwordConfirmation: "",
       },
       onSubmit: (values) => {
-        SignUpUser(values.email, values.password);
+        SignUpUser(values.email, values.password, user.avatar);
       },
     }
   );
@@ -48,12 +76,28 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
 
   return (
     <Container pattern={1} {...{ footer }}>
+      <View style={styles.container}>
+        <Pressable
+          onPress={() => handlePickAvatar()}
+          style={styles.avatarPlaceholder}
+        >
+          <Image style={styles.avatar} source={{ uri: user.avatar }} />
+
+          <Ionicons
+            name="ios-add"
+            size={40}
+            color="#FFF"
+            style={{ marginTop: 6, marginLeft: 2 }}
+          />
+        </Pressable>
+      </View>
+
       <Text variant="title1" textAlign="center" marginBottom="s">
         Create account
       </Text>
-      <Text variant="body" textAlign="center" marginBottom="m">
+      {/* <Text variant="body" textAlign="center" marginBottom="m">
         Let's us know what your name, email and your password
-      </Text>
+      </Text> */}
 
       <Box>
         <Box marginBottom="s">
@@ -123,5 +167,27 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+  },
+  avatar: {
+    position: "absolute",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  avatarPlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#E1E2E6",
+    marginVertical: 7,
+    marginTop: -30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default SignUp;

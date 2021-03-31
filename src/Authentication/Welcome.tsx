@@ -68,7 +68,7 @@ const Welcome = ({ navigation }: AuthNavigationProps<"Welcome">) => {
             onPress={() => navigation.navigate("Login")}
           />
           <Button
-            label="Join us, it's Free"
+            label="Create account, it's Free"
             onPress={() => navigation.navigate("SignUp")}
           />
           <BorderlessButton

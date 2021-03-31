@@ -1,11 +1,11 @@
 import React from "react";
-import { Dimensions, Image, ScrollView, StyleSheet } from "react-native";
+import { Dimensions, ScrollView, StyleSheet } from "react-native";
 import { Box, makeStyles, Theme } from "../../components/Theme";
 import { Text, Header } from "../../components";
 import { HomeNavigationProps } from "../../components/Navigation";
 import Graph, { DataPoint } from "./Graph";
 import Transaction from "./Transaction";
-import TopCurve from "./TopCurve";
+// import TopCurve from "./TopCurve";
 
 const footerHeight = Dimensions.get("window").width / 5;
 const startDate = new Date("2019-09-01").getTime();
@@ -53,7 +53,7 @@ const TransactionHistory = ({
             <Text variant="header" color="secondary" opacity={0.3}>
               TOTAL SPENT
             </Text>
-            <Text variant="title1">$1,815</Text>
+            <Text variant="title1">₹1,815</Text>
           </Box>
           <Box backgroundColor="primaryLight" borderRadius="m" padding="m">
             <Text color="primary">All Time</Text>

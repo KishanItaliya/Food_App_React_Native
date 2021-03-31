@@ -44,7 +44,7 @@ const initialCurrentLocation: any = {
   },
 };
 
-const categories = [
+export const categories = [
   {
     id: 1,
     name: "Rice",
@@ -102,7 +102,7 @@ const affordable = 1;
 // const fairPrice = 2;
 const expensive = 3;
 
-const restaurantData = [
+export const restaurantData = [
   {
     id: 1,
     name: "Crest Cafe",

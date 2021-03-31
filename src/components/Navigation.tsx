@@ -45,6 +45,7 @@ export type HomeRoutes = {
   Restaurant: undefined;
   ReviewScreen: undefined;
   Reviews: undefined;
+  Profile: undefined;
   OrderDelivery: undefined;
   TransactionHistory: undefined;
   Cart: undefined;

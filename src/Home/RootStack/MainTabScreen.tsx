@@ -147,21 +147,7 @@ const MainTabScreen = () => (
         tabBarButton: (props) => <TabBarCustomButton {...props} />,
       }}
     />
-    <Tab.Screen
-      name="Settings"
-      component={Settings}
-      options={{
-        tabBarLabel: "Settings",
-        tabBarIcon: ({ focused }) => (
-          <Icon
-            name="music"
-            color={focused ? COLORS.primary : COLORS.secondary}
-            size={25}
-          />
-        ),
-        tabBarButton: (props) => <TabBarCustomButton {...props} />,
-      }}
-    />
+
     <Tab.Screen
       name="Setting"
       component={Settings}
@@ -169,7 +155,7 @@ const MainTabScreen = () => (
         tabBarLabel: "Setting",
         tabBarIcon: ({ focused }) => (
           <Icon
-            name="settings"
+            name="bell"
             color={focused ? COLORS.primary : COLORS.secondary}
             size={25}
           />
